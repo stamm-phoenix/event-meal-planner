@@ -1,0 +1,184 @@
+@if (projectService.currentProject(); as project) {
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Project Details Card -->
+    <div class="bg-white border border-[#141414] rounded-xl p-6 shadow-[4px_4px_0px_0px_rgba(20,20,20,1)]">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-lg font-serif italic font-bold">Projektdetails</h2>
+        <button
+          (click)="openProjectDialog()"
+          class="p-2 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
+        >
+          <i class="pi pi-pencil text-sm"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-[10px] uppercase tracking-widest opacity-50">Projektname</label>
+          <p class="font-medium">{{ project.name }}</p>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-widest opacity-50">Gesamtteilnehmer</label>
+          <p class="font-medium">{{ project.totalPeople }}</p>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-widest opacity-50">Startdatum</label>
+          <p class="font-medium">{{ project.startDate ? formatDate(project.startDate) : '–' }}</p>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-widest opacity-50">Enddatum</label>
+          <p class="font-medium">{{ project.endDate ? formatDate(project.endDate) : '–' }}</p>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-widest opacity-50">Hauptgruppe</label>
+          <p class="font-medium">{{ projectService.mainGroupCount() }} Personen</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subgroups Card -->
+    <div class="bg-white border border-[#141414] rounded-xl p-6 shadow-[4px_4px_0px_0px_rgba(20,20,20,1)]">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-lg font-serif italic font-bold">Untergruppen</h2>
+        <button
+          (click)="openAddSubgroupDialog()"
+          class="p-2 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
+        >
+          <i class="pi pi-plus text-sm"></i>
+        </button>
+      </div>
+
+      @if (project.subgroups.length === 0) {
+        <p class="text-sm opacity-50 italic">Keine Untergruppen definiert.</p>
+      } @else {
+        <div class="space-y-2">
+          @for (sg of project.subgroups; track sg.id) {
+            <div class="group flex items-center justify-between py-3 px-4 border border-[#141414]/10 rounded-lg hover:border-[#141414]/30 transition-colors">
+              <div>
+                <span class="font-medium">{{ sg.name }}</span>
+                <span class="text-sm opacity-50 ml-2">({{ sg.count }} Personen)</span>
+              </div>
+              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  (click)="openEditSubgroupDialog(sg.id)"
+                  class="p-1.5 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
+                >
+                  <i class="pi pi-pencil text-xs"></i>
+                </button>
+                <button
+                  (click)="openDeleteDialog(sg.id)"
+                  class="p-1.5 hover:bg-red-600 hover:text-white transition-colors border border-[#141414] rounded-full"
+                >
+                  <i class="pi pi-trash text-xs"></i>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Edit Project Dialog -->
+  <p-dialog
+    header="Projekt Details bearbeiten"
+    [(visible)]="showProjectDialog"
+    [modal]="true"
+    [style]="{ width: '28rem' }"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Projektname</label>
+        <input
+          type="text"
+          pInputText
+          [ngModel]="projectForm().name"
+          (ngModelChange)="projectForm.update(f => ({ ...f, name: $event }))"
+          class="w-full"
+        />
+      </div>
+      <div>
+        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Gesamtteilnehmer</label>
+        <p-inputNumber
+          [ngModel]="projectForm().totalPeople"
+          (ngModelChange)="projectForm.update(f => ({ ...f, totalPeople: $event ?? 0 }))"
+          [min]="1"
+          [showButtons]="true"
+          styleClass="w-full"
+        />
+      </div>
+      <div>
+        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Startdatum</label>
+        <input
+          type="date"
+          [ngModel]="projectForm().startDate"
+          (ngModelChange)="projectForm.update(f => ({ ...f, startDate: $event }))"
+          class="w-full border border-gray-300 rounded-md px-3 py-2"
+        />
+      </div>
+      <div>
+        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Enddatum</label>
+        <input
+          type="date"
+          [ngModel]="projectForm().endDate"
+          (ngModelChange)="projectForm.update(f => ({ ...f, endDate: $event }))"
+          class="w-full border border-gray-300 rounded-md px-3 py-2"
+        />
+      </div>
+    </div>
+    <ng-template #footer>
+      <p-button label="Abbrechen" severity="secondary" (onClick)="showProjectDialog.set(false)" />
+      <p-button label="Speichern" (onClick)="saveProject()" />
+    </ng-template>
+  </p-dialog>
+
+  <!-- Add/Edit Subgroup Dialog -->
+  <p-dialog
+    [header]="editingSubgroupId() ? 'Untergruppe bearbeiten' : 'Untergruppe hinzufügen'"
+    [(visible)]="showSubgroupDialog"
+    [modal]="true"
+    [style]="{ width: '24rem' }"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Name</label>
+        <input
+          type="text"
+          pInputText
+          [ngModel]="subgroupForm().name"
+          (ngModelChange)="subgroupForm.update(f => ({ ...f, name: $event }))"
+          class="w-full"
+          placeholder="z.B. Vegetarier"
+        />
+      </div>
+      <div>
+        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Anzahl Personen</label>
+        <p-inputNumber
+          [ngModel]="subgroupForm().count"
+          (ngModelChange)="subgroupForm.update(f => ({ ...f, count: $event ?? 0 }))"
+          [min]="0"
+          [showButtons]="true"
+          styleClass="w-full"
+        />
+      </div>
+    </div>
+    <ng-template #footer>
+      <p-button label="Abbrechen" severity="secondary" (onClick)="showSubgroupDialog.set(false)" />
+      <p-button [label]="editingSubgroupId() ? 'Speichern' : 'Hinzufügen'" (onClick)="saveSubgroup()" />
+    </ng-template>
+  </p-dialog>
+
+  <!-- Delete Confirmation Dialog -->
+  <p-dialog
+    header="Untergruppe löschen"
+    [(visible)]="showDeleteDialog"
+    [modal]="true"
+    [style]="{ width: '24rem' }"
+  >
+    <p>Bist du sicher, dass du diese Untergruppe löschen möchtest?</p>
+    <ng-template #footer>
+      <p-button label="Abbrechen" severity="secondary" (onClick)="showDeleteDialog.set(false)" />
+      <p-button label="Löschen" severity="danger" (onClick)="confirmDelete()" />
+    </ng-template>
+  </p-dialog>
+}

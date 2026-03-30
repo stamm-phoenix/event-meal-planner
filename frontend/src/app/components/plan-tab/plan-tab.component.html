@@ -1,0 +1,64 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  @for (day of projectService.currentProject()?.days ?? []; track day) {
+    <div class="bg-white rounded-2xl border border-[#141414] overflow-hidden flex flex-col shadow-[4px_4px_0px_0px_rgba(20,20,20,1)]">
+      <div class="bg-[#141414] text-[#E4E3E0] p-4 flex justify-between items-center">
+        <h3 class="font-serif italic text-lg">{{ formatDate(day) }}</h3>
+        <button (click)="openAddMealDialog(day)" class="p-1 hover:bg-white/20 rounded-full transition-colors">
+          <i class="pi pi-plus"></i>
+        </button>
+      </div>
+      <div class="p-4 space-y-6 flex-1">
+        @for (block of getMealBlocksForDay(day); track block.id) {
+          <app-meal-block-card [block]="block" />
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Add/Edit Meal Block Dialog -->
+<p-dialog
+  [(visible)]="showMealDialog"
+  [header]="editingBlockId() ? 'Mahlzeit bearbeiten' : 'Neue Mahlzeit'"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [draggable]="false"
+>
+  <div class="space-y-4 pt-2">
+    <div>
+      <label class="block text-xs font-medium mb-1">Uhrzeit</label>
+      <input
+        type="time"
+        [value]="mealForm().time"
+        (input)="mealForm.set({ ...mealForm(), time: $any($event.target).value })"
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#141414]"
+      />
+    </div>
+    <div>
+      <label class="block text-xs font-medium mb-1">Bezeichnung</label>
+      <input
+        type="text"
+        [value]="mealForm().label"
+        (input)="mealForm.set({ ...mealForm(), label: $any($event.target).value })"
+        placeholder="z.B. Frühstück, Mittagessen..."
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#141414]"
+      />
+    </div>
+    <div>
+      <label class="block text-xs font-medium mb-1">Verantwortliche Person</label>
+      <input
+        type="text"
+        [value]="mealForm().responsiblePerson"
+        (input)="mealForm.set({ ...mealForm(), responsiblePerson: $any($event.target).value })"
+        placeholder="Name..."
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#141414]"
+      />
+    </div>
+  </div>
+  <ng-template #footer>
+    <div class="flex justify-end gap-2 pt-4">
+      <p-button label="Abbrechen" severity="secondary" (onClick)="showMealDialog.set(false)" />
+      <p-button label="Speichern" (onClick)="saveMeal()" />
+    </div>
+  </ng-template>
+</p-dialog>

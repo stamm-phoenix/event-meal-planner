@@ -1,0 +1,72 @@
+<div class="bg-white rounded-2xl border border-[#141414] p-8 shadow-[8px_8px_0px_0px_rgba(20,20,20,1)]">
+  <div class="flex justify-between items-center mb-8 border-b border-[#141414] pb-6">
+    <div>
+      <h2 class="text-2xl font-serif italic">Zutatenliste</h2>
+      <p class="text-[10px] uppercase tracking-widest opacity-50 mt-1">Zentrale Definition aller Zutaten</p>
+    </div>
+    <p-button icon="pi pi-plus" label="Neu" [rounded]="true" severity="contrast" (onClick)="openAddDialog()" />
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (mi of sortedIngredients(); track mi.id) {
+      <div class="bg-[#E4E3E0]/30 border border-[#141414]/10 p-6 rounded-2xl group hover:border-[#141414] transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h3 class="text-lg font-bold">{{ mi.name }}</h3>
+              <p class="text-[10px] uppercase tracking-widest opacity-50">{{ mi.category }}</p>
+            </div>
+            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button (click)="openEditDialog(mi)" class="p-2 hover:bg-[#141414]/5 rounded-full transition-all text-[#141414]/50 hover:text-[#141414]">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button (click)="deleteIngredient(mi)" [class]="getUsage(mi).length > 0 ? 'p-2 rounded-full text-red-200 cursor-not-allowed' : 'p-2 rounded-full text-red-400 hover:bg-red-50 hover:text-red-600'">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Standard-Einheit</label>
+              <p class="font-mono text-sm">{{ mi.unit }}</p>
+            </div>
+            <div>
+              <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Verwendung in Gerichten ({{ getUsage(mi).length }})</label>
+              <div class="flex flex-wrap gap-1 mt-2">
+                @if (getUsage(mi).length > 0) {
+                  @for (d of getUsage(mi); track d.id) {
+                    <span class="bg-white/50 border border-[#141414]/5 px-2 py-0.5 rounded text-[9px] font-medium">{{ d.name }}</span>
+                  }
+                } @else {
+                  <span class="text-[9px] italic opacity-40">Nicht verwendet</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Add/Edit Master Ingredient Dialog -->
+<p-dialog [header]="editingId ? 'Zutat bearbeiten' : 'Neue Zutat'" [(visible)]="showDialog" [modal]="true" [style]="{ width: '28rem' }">
+  <div class="space-y-4">
+    <div>
+      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Name</label>
+      <input type="text" pInputText [(ngModel)]="formData.name" placeholder="z.B. Kartoffeln" class="w-full" />
+    </div>
+    <div>
+      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Einheit</label>
+      <input type="text" pInputText [(ngModel)]="formData.unit" placeholder="z.B. g, kg, Stk" class="w-full" />
+    </div>
+    <div>
+      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Kategorie</label>
+      <input type="text" pInputText [(ngModel)]="formData.category" placeholder="z.B. Gemüse, Kühlregal" class="w-full" />
+    </div>
+  </div>
+  <ng-template #footer>
+    <p-button label="Abbrechen" severity="secondary" (onClick)="showDialog.set(false)" />
+    <p-button label="Speichern" (onClick)="save()" />
+  </ng-template>
+</p-dialog>
