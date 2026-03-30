@@ -1,83 +1,81 @@
-<div class="bg-white rounded-2xl border border-[#141414] p-8 shadow-[8px_8px_0px_0px_rgba(20,20,20,1)]">
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-[#141414] pb-6 gap-4">
-    <div>
-      <h2 class="text-2xl font-serif italic">Packliste</h2>
-      <p class="text-[10px] uppercase tracking-widest opacity-50 mt-1">Werkzeuge und Ausrüstung</p>
+<p-card>
+  <ng-template #header>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center px-6 pt-6 pb-4 border-b gap-4">
+      <div>
+        <h2 class="text-2xl font-bold m-0">Packliste</h2>
+        <p class="text-sm text-gray-500 mt-1 m-0">Werkzeuge und Ausrüstung</p>
+      </div>
+      <p-button icon="pi pi-plus" label="Allgemeines Werkzeug" [rounded]="true" severity="secondary" (onClick)="openAddToolDialog()" />
     </div>
-    <p-button icon="pi pi-plus" label="Allgemeines Werkzeug" [rounded]="true" severity="contrast" (onClick)="openAddToolDialog()" />
-  </div>
+  </ng-template>
 
   <!-- General tools management -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-    <div class="space-y-4">
-      <h3 class="text-xs font-bold uppercase tracking-[0.2em] opacity-40">Allgemeine Werkzeuge verwalten</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+    <div class="space-y-3">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase m-0">Allgemeine Werkzeuge verwalten</h3>
       <div class="space-y-2">
         @for (tool of generalTools(); track tool.id) {
-          <div class="flex gap-2 items-center bg-[#E4E3E0]/30 p-2 rounded-lg group">
-            <div class="flex-1 text-xs font-medium">{{ tool.name }}</div>
-            <div class="w-32 text-[10px] font-mono opacity-60">{{ tool.responsiblePerson || 'Nicht zugewiesen' }}</div>
+          <div class="flex gap-2 items-center bg-gray-50 border p-2 rounded-lg group">
+            <div class="flex-1 text-sm font-medium">{{ tool.name }}</div>
+            <div class="w-32 text-xs font-mono text-gray-400">{{ tool.responsiblePerson || 'Nicht zugewiesen' }}</div>
             <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button (click)="openEditToolDialog(tool)" class="p-1 hover:bg-[#141414]/5 rounded transition-all">
-                <i class="pi pi-pencil text-sm"></i>
-              </button>
-              <button (click)="deleteTool(tool.id)" class="text-red-400 hover:text-red-600 p-1">
-                <i class="pi pi-trash text-sm"></i>
-              </button>
+              <p-button icon="pi pi-pencil" severity="secondary" [text]="true" [rounded]="true" size="small" (onClick)="openEditToolDialog(tool)" />
+              <p-button icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" size="small" (onClick)="deleteTool(tool.id)" />
             </div>
           </div>
         }
         @if (generalTools().length === 0) {
-          <p class="text-[10px] italic opacity-30">Keine allgemeinen Werkzeuge.</p>
+          <p class="text-sm text-gray-400 italic m-0">Keine allgemeinen Werkzeuge.</p>
         }
       </div>
     </div>
   </div>
 
   <!-- Grouped packing list -->
-  <div class="space-y-12">
+  <div class="space-y-8">
     @for (group of packliste(); track group.person) {
-      <div [class]="isMine(group.person) ? 'space-y-4 p-6 rounded-2xl border transition-all bg-orange-50 border-orange-400 shadow-[4px_4px_0px_0px_rgba(251,146,60,1)]' : 'space-y-4 p-6 rounded-2xl border transition-all bg-[#E4E3E0]/20 border-[#141414]/10'">
+      <div [class]="isMine(group.person) ? 'space-y-3 p-4 rounded-2xl border bg-orange-50 border-orange-300' : 'space-y-3 p-4 rounded-2xl border bg-gray-50'">
         <div class="flex items-center justify-between">
-          <h3 class="text-sm font-bold uppercase tracking-[0.2em] flex items-center gap-2">
-            <i [class]="isMine(group.person) ? 'pi pi-user text-orange-600' : 'pi pi-user opacity-40'"></i>
+          <h3 class="text-sm font-bold flex items-center gap-2 m-0">
+            <i [class]="isMine(group.person) ? 'pi pi-user text-orange-600' : 'pi pi-user text-gray-400'"></i>
             {{ group.person || 'Nicht zugewiesen' }}
             @if (isMine(group.person)) {
-              <span class="text-[10px] text-orange-600 normal-case font-medium">(Das bist du!)</span>
+              <span class="text-xs text-orange-600 font-medium">(Das bist du!)</span>
             }
           </h3>
-          <span class="text-[10px] opacity-40 font-mono">{{ group.items.length }} Teile</span>
+          <span class="text-xs text-gray-400 font-mono">{{ group.items.length }} Teile</span>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           @for (item of group.items; track item.name + '-' + item.source) {
-            <div [class]="isMine(group.person) ? 'bg-white border border-orange-200 p-4 rounded-xl flex justify-between items-center transition-all' : 'bg-white border border-[#141414]/10 p-4 rounded-xl flex justify-between items-center hover:border-[#141414] transition-all'">
+            <div [class]="isMine(group.person) ? 'bg-white border border-orange-200 p-4 rounded-xl flex justify-between items-center' : 'bg-white border p-4 rounded-xl flex justify-between items-center hover:border-gray-400 transition-all'">
               <div>
-                <p class="font-bold">{{ item.name }}</p>
-                <p class="text-[8px] opacity-50 uppercase tracking-widest mt-1">Quelle: {{ item.source }}</p>
+                <p class="font-bold m-0">{{ item.name }}</p>
+                <p class="text-xs text-gray-400 mt-1 m-0">Quelle: {{ item.source }}</p>
               </div>
-              <i class="pi pi-briefcase opacity-20"></i>
+              <i class="pi pi-briefcase text-gray-300"></i>
             </div>
           }
         </div>
       </div>
     }
     @if (packliste().length === 0) {
-      <div class="py-20 text-center text-[#141414]/40">
-        <i class="pi pi-save text-5xl mb-4 opacity-20 block"></i>
-        <p class="font-serif italic text-xl">Die Packliste ist noch leer.</p>
+      <div class="py-20 text-center text-gray-400">
+        <i class="pi pi-save text-5xl block mb-4"></i>
+        <p class="text-xl">Die Packliste ist noch leer.</p>
       </div>
     }
   </div>
-</div>
+</p-card>
 
 <!-- Add/Edit tool dialog -->
 <p-dialog [header]="editingToolId ? 'Werkzeug bearbeiten' : 'Allgemeines Werkzeug hinzufügen'" [(visible)]="showToolDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Name des Werkzeugs</label>
+      <label class="block text-xs text-gray-500 mb-1">Name des Werkzeugs</label>
       <input type="text" pInputText [(ngModel)]="toolFormData.name" class="w-full" />
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Verantwortlich</label>
+      <label class="block text-xs text-gray-500 mb-1">Verantwortlich</label>
       <input type="text" pInputText [(ngModel)]="toolFormData.responsiblePerson" class="w-full" />
     </div>
   </div>

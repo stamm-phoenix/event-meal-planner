@@ -1,82 +1,94 @@
 @if (projectService.currentProject(); as project) {
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     <!-- Project Details Card -->
-    <div class="bg-white border border-[#141414] rounded-xl p-6 shadow-[4px_4px_0px_0px_rgba(20,20,20,1)]">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-lg font-serif italic font-bold">Projektdetails</h2>
-        <button
-          (click)="openProjectDialog()"
-          class="p-2 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
-        >
-          <i class="pi pi-pencil text-sm"></i>
-        </button>
-      </div>
+    <p-card>
+      <ng-template #header>
+        <div class="flex justify-between items-center px-4 pt-4">
+          <h2 class="text-lg font-bold m-0">Projektdetails</h2>
+          <p-button
+            icon="pi pi-pencil"
+            severity="secondary"
+            [text]="true"
+            [rounded]="true"
+            size="small"
+            (onClick)="openProjectDialog()"
+          />
+        </div>
+      </ng-template>
 
       <div class="space-y-4">
         <div>
-          <label class="text-[10px] uppercase tracking-widest opacity-50">Projektname</label>
-          <p class="font-medium">{{ project.name }}</p>
+          <label class="text-xs text-gray-500 block mb-1">Projektname</label>
+          <p class="font-medium m-0">{{ project.name }}</p>
         </div>
         <div>
-          <label class="text-[10px] uppercase tracking-widest opacity-50">Gesamtteilnehmer</label>
-          <p class="font-medium">{{ project.totalPeople }}</p>
+          <label class="text-xs text-gray-500 block mb-1">Gesamtteilnehmer</label>
+          <p class="font-medium m-0">{{ project.totalPeople }}</p>
         </div>
         <div>
-          <label class="text-[10px] uppercase tracking-widest opacity-50">Startdatum</label>
-          <p class="font-medium">{{ project.startDate ? formatDate(project.startDate) : '–' }}</p>
+          <label class="text-xs text-gray-500 block mb-1">Startdatum</label>
+          <p class="font-medium m-0">{{ project.startDate ? formatDate(project.startDate) : '–' }}</p>
         </div>
         <div>
-          <label class="text-[10px] uppercase tracking-widest opacity-50">Enddatum</label>
-          <p class="font-medium">{{ project.endDate ? formatDate(project.endDate) : '–' }}</p>
+          <label class="text-xs text-gray-500 block mb-1">Enddatum</label>
+          <p class="font-medium m-0">{{ project.endDate ? formatDate(project.endDate) : '–' }}</p>
         </div>
         <div>
-          <label class="text-[10px] uppercase tracking-widest opacity-50">Hauptgruppe</label>
-          <p class="font-medium">{{ projectService.mainGroupCount() }} Personen</p>
+          <label class="text-xs text-gray-500 block mb-1">Hauptgruppe</label>
+          <p class="font-medium m-0">{{ projectService.mainGroupCount() }} Personen</p>
         </div>
       </div>
-    </div>
+    </p-card>
 
     <!-- Subgroups Card -->
-    <div class="bg-white border border-[#141414] rounded-xl p-6 shadow-[4px_4px_0px_0px_rgba(20,20,20,1)]">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-lg font-serif italic font-bold">Untergruppen</h2>
-        <button
-          (click)="openAddSubgroupDialog()"
-          class="p-2 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
-        >
-          <i class="pi pi-plus text-sm"></i>
-        </button>
-      </div>
+    <p-card>
+      <ng-template #header>
+        <div class="flex justify-between items-center px-4 pt-4">
+          <h2 class="text-lg font-bold m-0">Untergruppen</h2>
+          <p-button
+            icon="pi pi-plus"
+            severity="secondary"
+            [text]="true"
+            [rounded]="true"
+            size="small"
+            (onClick)="openAddSubgroupDialog()"
+          />
+        </div>
+      </ng-template>
 
       @if (project.subgroups.length === 0) {
-        <p class="text-sm opacity-50 italic">Keine Untergruppen definiert.</p>
+        <p class="text-sm text-gray-400 italic">Keine Untergruppen definiert.</p>
       } @else {
         <div class="space-y-2">
           @for (sg of project.subgroups; track sg.id) {
-            <div class="group flex items-center justify-between py-3 px-4 border border-[#141414]/10 rounded-lg hover:border-[#141414]/30 transition-colors">
+            <div class="flex items-center justify-between py-2 px-3 border rounded-lg hover:bg-gray-50 group">
               <div>
                 <span class="font-medium">{{ sg.name }}</span>
-                <span class="text-sm opacity-50 ml-2">({{ sg.count }} Personen)</span>
+                <span class="text-sm text-gray-500 ml-2">({{ sg.count }} Personen)</span>
               </div>
-              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  (click)="openEditSubgroupDialog(sg.id)"
-                  class="p-1.5 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
-                >
-                  <i class="pi pi-pencil text-xs"></i>
-                </button>
-                <button
-                  (click)="openDeleteDialog(sg.id)"
-                  class="p-1.5 hover:bg-red-600 hover:text-white transition-colors border border-[#141414] rounded-full"
-                >
-                  <i class="pi pi-trash text-xs"></i>
-                </button>
+              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <p-button
+                  icon="pi pi-pencil"
+                  severity="secondary"
+                  [text]="true"
+                  [rounded]="true"
+                  size="small"
+                  (onClick)="openEditSubgroupDialog(sg.id)"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  size="small"
+                  (onClick)="openDeleteDialog(sg.id)"
+                />
               </div>
             </div>
           }
         </div>
       }
-    </div>
+    </p-card>
   </div>
 
   <!-- Edit Project Dialog -->
@@ -88,7 +100,7 @@
   >
     <div class="space-y-4">
       <div>
-        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Projektname</label>
+        <label class="text-xs text-gray-500 block mb-1">Projektname</label>
         <input
           type="text"
           pInputText
@@ -98,7 +110,7 @@
         />
       </div>
       <div>
-        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Gesamtteilnehmer</label>
+        <label class="text-xs text-gray-500 block mb-1">Gesamtteilnehmer</label>
         <p-inputNumber
           [ngModel]="projectForm().totalPeople"
           (ngModelChange)="projectForm.update(f => ({ ...f, totalPeople: $event ?? 0 }))"
@@ -108,7 +120,7 @@
         />
       </div>
       <div>
-        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Startdatum</label>
+        <label class="text-xs text-gray-500 block mb-1">Startdatum</label>
         <input
           type="date"
           [ngModel]="projectForm().startDate"
@@ -117,7 +129,7 @@
         />
       </div>
       <div>
-        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Enddatum</label>
+        <label class="text-xs text-gray-500 block mb-1">Enddatum</label>
         <input
           type="date"
           [ngModel]="projectForm().endDate"
@@ -141,7 +153,7 @@
   >
     <div class="space-y-4">
       <div>
-        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Name</label>
+        <label class="text-xs text-gray-500 block mb-1">Name</label>
         <input
           type="text"
           pInputText
@@ -152,7 +164,7 @@
         />
       </div>
       <div>
-        <label class="text-[10px] uppercase tracking-widest opacity-50 block mb-1">Anzahl Personen</label>
+        <label class="text-xs text-gray-500 block mb-1">Anzahl Personen</label>
         <p-inputNumber
           [ngModel]="subgroupForm().count"
           (ngModelChange)="subgroupForm.update(f => ({ ...f, count: $event ?? 0 }))"

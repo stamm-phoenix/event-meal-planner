@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
 import { ConfirmationService } from 'primeng/api';
 import { ProjectService } from '../../services/project.service';
 import { CalculationService } from '../../services/calculation.service';
@@ -10,7 +11,7 @@ import { Tool } from '../../models/project.model';
 
 @Component({
   selector: 'app-packliste-tab',
-  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule],
+  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule, CardModule],
   templateUrl: './packliste-tab.component.html',
 })
 export class PacklisteTabComponent {

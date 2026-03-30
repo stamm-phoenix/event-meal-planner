@@ -1,47 +1,54 @@
-<div class="bg-white rounded-2xl border border-[#141414] p-8 shadow-[8px_8px_0px_0px_rgba(20,20,20,1)]">
+<p-card>
   <!-- Header with title, hide completed checkbox, grouping buttons -->
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-[#141414] pb-6 gap-4">
-    <div>
-      <h2 class="text-2xl font-serif italic">Einkaufsliste</h2>
-      <p class="text-[10px] uppercase tracking-widest opacity-50 mt-1">Berechnet für {{ project()?.totalPeople }} Personen</p>
-    </div>
-    <div class="flex flex-wrap items-center gap-4">
-      <!-- Hide completed checkbox -->
-      <label class="flex items-center gap-2 cursor-pointer bg-white border border-[#141414]/10 rounded-xl px-4 py-1.5 hover:bg-gray-50 transition-colors">
-        <input type="checkbox" [ngModel]="calculationService.hideCompleted()" (ngModelChange)="calculationService.hideCompleted.set($event)" class="w-4 h-4 rounded border-[#141414]/20" />
-        <span class="text-[10px] font-bold uppercase tracking-widest">Gekaufte ausblenden</span>
-      </label>
-      <!-- Group by buttons -->
-      <div class="flex flex-wrap gap-2 bg-[#E4E3E0] p-1 rounded-xl border border-[#141414]/10">
-        @for (opt of groupOptions; track opt.id) {
-          <button
-            (click)="calculationService.groupBy.set(opt.id)"
-            [class]="calculationService.groupBy() === opt.id ? 'px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all bg-[#141414] text-[#E4E3E0]' : 'px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-white/50'"
-          >{{ opt.label }}</button>
-        }
+  <ng-template #header>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center px-6 pt-6 pb-4 border-b gap-4">
+      <div>
+        <h2 class="text-2xl font-bold m-0">Einkaufsliste</h2>
+        <p class="text-sm text-gray-500 mt-1 m-0">Berechnet für {{ project()?.totalPeople }} Personen</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Hide completed checkbox -->
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" [ngModel]="calculationService.hideCompleted()" (ngModelChange)="calculationService.hideCompleted.set($event)" class="w-4 h-4" />
+          <span class="text-sm">Gekaufte ausblenden</span>
+        </label>
+        <!-- Group by buttons -->
+        <div class="flex gap-1">
+          @for (opt of groupOptions; track opt.id) {
+            <p-button
+              [label]="opt.label"
+              (onClick)="calculationService.groupBy.set(opt.id)"
+              [outlined]="calculationService.groupBy() !== opt.id"
+              severity="secondary"
+              size="small"
+            />
+          }
+        </div>
       </div>
     </div>
-  </div>
+  </ng-template>
 
   @if (shoppingList().length > 0 || generalShoppingList().length > 0) {
-    <div class="space-y-12">
+    <div class="space-y-10">
       <!-- General ingredients section -->
       @if (generalShoppingList().length > 0) {
-        <div class="space-y-4">
-          <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-purple-600 border-l-4 border-purple-600 pl-3">Gewürze & Mengenunabhängiges</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold text-purple-600 border-l-4 border-purple-600 pl-3 m-0">Gewürze & Mengenunabhängiges</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             @for (item of generalShoppingList(); track item.name) {
-              <div [class]="item.isBought ? 'p-4 rounded-xl border transition-all flex items-center justify-between bg-green-50/50 opacity-50 border-green-500/30' : 'p-4 rounded-xl border transition-all flex items-center justify-between bg-[#E4E3E0]/30 border-transparent hover:border-[#141414]'">
+              <div [class]="item.isBought ? 'p-3 rounded-xl border flex items-center justify-between bg-green-50 opacity-60 border-green-300' : 'p-3 rounded-xl border flex items-center justify-between bg-gray-50 hover:border-gray-400 transition-colors'">
                 <div>
-                  <p [class]="item.isBought ? 'font-bold line-through' : 'font-bold'">{{ item.name }}</p>
-                  <p class="text-[10px] opacity-40 uppercase tracking-widest">{{ item.category }}</p>
+                  <p [class]="item.isBought ? 'font-bold line-through m-0' : 'font-bold m-0'">{{ item.name }}</p>
+                  <p class="text-xs text-gray-400 m-0">{{ item.category }}</p>
                 </div>
-                <button
-                  (click)="toggleGeneralBought(item.name)"
-                  [class]="item.isBought ? 'p-2 rounded-lg border transition-all bg-green-500 text-white border-green-600' : 'p-2 rounded-lg border transition-all bg-white border-[#141414]/10 hover:border-[#141414]'"
-                >
-                  <i class="pi pi-shopping-cart text-sm"></i>
-                </button>
+                <p-button
+                  icon="pi pi-shopping-cart"
+                  [severity]="item.isBought ? 'success' : 'secondary'"
+                  [outlined]="!item.isBought"
+                  [rounded]="true"
+                  size="small"
+                  (onClick)="toggleGeneralBought(item.name)"
+                />
               </div>
             }
           </div>
@@ -50,67 +57,69 @@
 
       <!-- Grouped shopping items -->
       @for (group of groups(); track group) {
-        <div class="space-y-4">
-          <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-orange-600 border-l-4 border-orange-600 pl-3">
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold text-orange-600 border-l-4 border-orange-600 pl-3 m-0">
             {{ isDay(group) ? formatDate(group) : group }}
           </h3>
-          <div class="grid grid-cols-1 gap-4">
+          <div class="grid grid-cols-1 gap-3">
             @for (item of getItemsForGroup(group); track item.name + '-' + item.unit) {
               <!-- Shopping item card -->
-              <div [class]="getItemClasses(item)" class="group relative p-4 rounded-xl border transition-all flex flex-col md:flex-row md:items-center gap-4">
+              <div [class]="getItemClasses(item)" class="group p-4 rounded-xl border transition-all flex flex-col md:flex-row md:items-center gap-4">
                 <div class="flex-1">
-                  <div class="flex items-center gap-2">
+                  <div class="flex items-center gap-2 flex-wrap">
                     <span [class]="isFullyBought(item) ? 'font-bold line-through' : 'font-bold'">{{ item.name }}</span>
-                    <span class="text-[10px] opacity-40">({{ item.category }})</span>
+                    <span class="text-xs text-gray-400">({{ item.category }})</span>
                     @if (isPartiallyBought(item)) {
-                      <span class="bg-orange-100 text-orange-700 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tighter">Teilweise</span>
+                      <span class="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-0.5 rounded">Teilweise</span>
                     }
                     @if (isFullyBought(item)) {
-                      <span class="bg-green-100 text-green-700 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tighter">Erledigt</span>
+                      <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded">Erledigt</span>
                     }
                   </div>
-                  <div class="text-[10px] opacity-50 mt-1 flex flex-col gap-1">
+                  <div class="text-xs text-gray-400 mt-1 flex flex-col gap-1">
                     @for (source of item.sources; track $index) {
                       <span class="flex items-center gap-1">
-                        <i class="pi pi-list text-[8px]"></i> {{ source }}
+                        <i class="pi pi-list text-xs"></i> {{ source }}
                       </span>
                     }
                   </div>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-4">
+                <div class="flex flex-wrap items-center gap-3">
                   @if (item.amount > 0) {
                     <div class="flex items-center gap-2">
-                      <label class="text-[9px] uppercase tracking-widest opacity-40">Laden:</label>
-                      <span class="text-[10px] font-mono bg-white/50 px-2 py-1 rounded border border-[#141414]/5 min-w-[60px]">
+                      <label class="text-xs text-gray-400">Laden:</label>
+                      <span class="text-sm font-mono bg-white px-2 py-1 rounded border min-w-[60px]">
                         {{ getStore(item) || '-' }}
                       </span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <label class="text-[9px] uppercase tracking-widest opacity-40">Gekauft:</label>
-                      <div class="flex items-center bg-white/50 border border-[#141414]/10 rounded overflow-hidden text-[10px]">
+                      <label class="text-xs text-gray-400">Gekauft:</label>
+                      <div class="flex items-center bg-white border rounded overflow-hidden text-sm">
                         <span class="px-2 py-1 font-mono">{{ item.boughtAmount.toFixed(1) }}</span>
-                        <span class="bg-[#141414]/5 px-2 py-1 border-l border-[#141414]/10 opacity-60">/ {{ item.amount.toFixed(1) }} {{ item.unit }}</span>
+                        <span class="bg-gray-50 px-2 py-1 border-l text-gray-500">/ {{ item.amount.toFixed(1) }} {{ item.unit }}</span>
                       </div>
                     </div>
                     <div class="flex gap-1">
-                      <button (click)="openEditItemDialog(item)" class="p-2 rounded-lg border border-[#141414]/10 bg-white hover:border-[#141414] transition-all">
-                        <i class="pi pi-pencil text-sm"></i>
-                      </button>
-                      <button
-                        (click)="toggleBought(item)"
-                        [class]="isFullyBought(item) ? 'p-2 rounded-lg border transition-all bg-green-500 text-white border-green-600' : 'p-2 rounded-lg border transition-all bg-white border-[#141414]/10 hover:border-[#141414]'"
-                      >
-                        <i class="pi pi-shopping-cart text-sm"></i>
-                      </button>
+                      <p-button icon="pi pi-pencil" severity="secondary" [outlined]="true" size="small" [rounded]="true" (onClick)="openEditItemDialog(item)" />
+                      <p-button
+                        icon="pi pi-shopping-cart"
+                        [severity]="isFullyBought(item) ? 'success' : 'secondary'"
+                        [outlined]="!isFullyBought(item)"
+                        [rounded]="true"
+                        size="small"
+                        (onClick)="toggleBought(item)"
+                      />
                     </div>
                   } @else {
-                    <button
-                      (click)="toggleGeneralBought(item.name)"
-                      [class]="isFullyBought(item) ? 'p-2 rounded-lg border transition-all bg-green-500 text-white border-green-600' : 'p-2 rounded-lg border transition-all bg-white border-[#141414]/10 hover:border-[#141414]'"
-                    >
-                      <i class="pi pi-shopping-cart text-sm"></i>
-                    </button>
+                    <p-button
+                      icon="pi pi-shopping-cart"
+                      [severity]="isFullyBought(item) ? 'success' : 'secondary'"
+                      [outlined]="!isFullyBought(item)"
+                      [rounded]="true"
+                      size="small"
+                      (onClick)="toggleGeneralBought(item.name)"
+                    />
                   }
                 </div>
               </div>
@@ -120,30 +129,30 @@
       }
     </div>
   } @else {
-    <div class="py-20 text-center text-[#141414]/40">
-      <i class="pi pi-shopping-cart text-5xl mb-4 opacity-20 block"></i>
-      <p class="font-serif italic text-xl">Deine Einkaufsliste ist noch leer.</p>
+    <div class="py-20 text-center text-gray-400">
+      <i class="pi pi-shopping-cart text-5xl block mb-4"></i>
+      <p class="text-xl">Deine Einkaufsliste ist noch leer.</p>
       <p class="text-sm mt-2">Füge Mahlzeiten im Zeitplan hinzu, um Zutaten zu generieren.</p>
     </div>
   }
-</div>
+</p-card>
 
 <!-- Edit shopping item dialog -->
 <p-dialog header="Einkauf bearbeiten" [(visible)]="showEditDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
-    <div class="bg-[#141414]/5 p-4 rounded-xl mb-4">
-      <p class="font-bold text-lg">{{ editFormData.name }}</p>
-      <p class="text-[10px] uppercase tracking-widest opacity-50">Bedarf: {{ editFormData.totalAmount.toFixed(1) }} {{ editFormData.unit }}</p>
+    <div class="bg-gray-50 p-4 rounded-xl mb-4">
+      <p class="font-bold text-lg m-0">{{ editFormData.name }}</p>
+      <p class="text-xs text-gray-500 m-0">Bedarf: {{ editFormData.totalAmount.toFixed(1) }} {{ editFormData.unit }}</p>
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Laden</label>
+      <label class="block text-xs text-gray-500 mb-1">Laden</label>
       <input type="text" pInputText [(ngModel)]="editFormData.store" placeholder="z.B. Aldi, Rewe..." class="w-full" />
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Gekaufte Menge</label>
-      <div class="flex items-center bg-[#E4E3E0]/30 border border-[#141414]/10 rounded-xl overflow-hidden">
-        <input type="number" step="0.01" [(ngModel)]="editFormData.boughtAmount" class="flex-1 px-4 py-2 bg-transparent focus:outline-none font-mono" />
-        <span class="px-4 py-2 bg-[#141414]/5 text-[10px] border-l border-[#141414]/10">/ {{ editFormData.totalAmount.toFixed(1) }} {{ editFormData.unit }}</span>
+      <label class="block text-xs text-gray-500 mb-1">Gekaufte Menge</label>
+      <div class="flex items-center border rounded-xl overflow-hidden">
+        <input type="number" step="0.01" [(ngModel)]="editFormData.boughtAmount" class="flex-1 px-4 py-2 focus:outline-none font-mono" />
+        <span class="px-4 py-2 bg-gray-50 text-sm border-l text-gray-500">/ {{ editFormData.totalAmount.toFixed(1) }} {{ editFormData.unit }}</span>
       </div>
     </div>
   </div>

@@ -1,11 +1,12 @@
 import { Component, inject, computed } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ProjectService } from '../../services/project.service';
 import { CalculationService, GroupBy, formatDate } from '../../services/calculation.service';
 
 @Component({
   selector: 'app-lager-tab',
-  imports: [ButtonModule],
+  imports: [ButtonModule, CardModule],
   templateUrl: './lager-tab.component.html',
 })
 export class LagerTabComponent {

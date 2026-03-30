@@ -4,11 +4,12 @@ import { ProjectService } from '../../services/project.service';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-project-selection',
-  imports: [ButtonModule, InputTextModule, FormsModule],
+  imports: [ButtonModule, InputTextModule, CardModule, FormsModule],
   templateUrl: './project-selection.component.html',
 })
 export class ProjectSelectionComponent {

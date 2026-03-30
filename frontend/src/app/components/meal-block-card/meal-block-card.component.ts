@@ -50,7 +50,7 @@ export class MealBlockCardComponent {
     if (this.block().isCompleted) {
       return `${base} border-green-300 bg-green-50 opacity-60`;
     }
-    return `${base} border-[#141414]/10 bg-[#FAFAF8] hover:border-[#141414]/30`;
+    return `${base} border-gray-200 bg-white hover:border-gray-400`;
   }
 
   // Main dish filtering

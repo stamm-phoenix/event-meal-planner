@@ -3,13 +3,13 @@
   <div class="flex justify-between items-start">
     <div>
       <div class="flex items-center gap-3">
-        <h2 class="text-2xl font-serif italic">{{ dish().name }}</h2>
+        <h2 class="text-2xl font-bold m-0">{{ dish().name }}</h2>
         <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary" size="small" (onClick)="openEditDishDialog()" />
       </div>
-      <div class="flex items-center gap-2 mt-1 text-sm opacity-60">
+      <div class="flex items-center gap-2 mt-1 text-sm text-gray-500">
         <span>{{ dish().baseServings }} {{ dish().isFixedAmount ? 'Portionen (fixe Menge)' : 'Pers. Basis' }}</span>
         @if (dish().isFixedAmount) {
-          <span class="bg-[#141414] text-[#E4E3E0] text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full">Fixe Menge</span>
+          <span class="bg-gray-800 text-white text-xs px-2 py-0.5 rounded-full">Fixe Menge</span>
         }
       </div>
     </div>
@@ -19,17 +19,17 @@
   <!-- Notes and Links section -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Notes -->
-    <div class="p-4 rounded-xl border border-[#141414]/10">
+    <div class="p-4 rounded-xl border">
       <div class="flex justify-between items-center mb-2">
-        <h3 class="text-[10px] uppercase tracking-widest opacity-50">Notizen</h3>
+        <h3 class="text-xs text-gray-500 font-semibold uppercase m-0">Notizen</h3>
         <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary" size="small" (onClick)="openNotesDialog()" />
       </div>
-      <p class="text-sm whitespace-pre-wrap">{{ dish().notes || 'Keine Notizen vorhanden.' }}</p>
+      <p class="text-sm whitespace-pre-wrap m-0">{{ dish().notes || 'Keine Notizen vorhanden.' }}</p>
     </div>
 
     <!-- Links -->
-    <div class="p-4 rounded-xl border border-[#141414]/10">
-      <h3 class="text-[10px] uppercase tracking-widest opacity-50 mb-2">Links</h3>
+    <div class="p-4 rounded-xl border">
+      <h3 class="text-xs text-gray-500 font-semibold uppercase mb-2 m-0">Links</h3>
       <div class="space-y-1 mb-3">
         @for (link of dish().links ?? []; track $index) {
           <div class="flex items-center justify-between gap-2 group">
@@ -45,16 +45,16 @@
   <!-- Ingredients table -->
   <div>
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-serif italic">
+      <h3 class="text-lg font-bold m-0">
         Zutaten (für {{ dish().baseServings }} {{ dish().isFixedAmount ? 'Portionen' : 'Pers.' }})
       </h3>
-      <p-button icon="pi pi-plus" label="Zutat hinzufügen" [rounded]="true" severity="contrast" size="small" (onClick)="openAddIngredientDialog()" />
+      <p-button icon="pi pi-plus" label="Zutat hinzufügen" [rounded]="true" severity="secondary" size="small" (onClick)="openAddIngredientDialog()" />
     </div>
 
     @if (dish().ingredients.length > 0) {
-      <div class="rounded-xl border border-[#141414]/10 overflow-hidden">
+      <div class="rounded-xl border overflow-hidden">
         <!-- Table header -->
-        <div class="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-4 py-2 bg-[#141414]/5 text-[10px] uppercase tracking-widest opacity-50">
+        <div class="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-4 py-2 bg-gray-50 text-xs text-gray-500 font-semibold uppercase">
           <span>Name</span>
           <span>Menge</span>
           <span>Einheit</span>
@@ -63,11 +63,11 @@
         </div>
         <!-- Ingredient rows -->
         @for (ing of dish().ingredients; track ing.id) {
-          <div class="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-4 py-3 border-t border-[#141414]/5 items-center group hover:bg-[#141414]/[0.02] transition-colors">
+          <div class="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-4 py-3 border-t items-center group hover:bg-gray-50 transition-colors">
             <span class="font-medium text-sm">{{ ing.name }}</span>
             <span class="text-sm">{{ ing.amountPerPerson }}</span>
-            <span class="text-sm opacity-60">{{ ing.unit }}</span>
-            <span class="text-sm opacity-60">{{ ing.category }}</span>
+            <span class="text-sm text-gray-500">{{ ing.unit }}</span>
+            <span class="text-sm text-gray-500">{{ ing.category }}</span>
             <div class="w-16 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary" size="small" (onClick)="openEditIngredientDialog(ing)" />
               <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" size="small" (onClick)="removeIngredient(ing.id)" />
@@ -76,7 +76,7 @@
         }
       </div>
     } @else {
-      <div class="text-center py-8 text-sm opacity-40 border-2 border-dashed border-[#141414]/10 rounded-xl">
+      <div class="text-center py-8 text-sm text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">
         Noch keine Zutaten hinzugefügt.
       </div>
     }
@@ -85,9 +85,9 @@
   <!-- Tools & General Ingredients -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Werkzeuge -->
-    <div class="p-4 rounded-xl border border-[#141414]/10">
+    <div class="p-4 rounded-xl border">
       <div class="flex justify-between items-center mb-3">
-        <h3 class="text-[10px] uppercase tracking-widest opacity-50">Werkzeuge</h3>
+        <h3 class="text-xs text-gray-500 font-semibold uppercase m-0">Werkzeuge</h3>
         <p-button icon="pi pi-plus" [rounded]="true" [text]="true" severity="secondary" size="small" (onClick)="openAddToolDialog()" />
       </div>
       <div class="space-y-2">
@@ -96,7 +96,7 @@
             <div class="text-sm">
               <span class="font-medium">{{ tool.name }}</span>
               @if (tool.responsiblePerson) {
-                <span class="opacity-50 ml-2">({{ tool.responsiblePerson }})</span>
+                <span class="text-gray-400 ml-2">({{ tool.responsiblePerson }})</span>
               }
             </div>
             <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -105,15 +105,15 @@
             </div>
           </div>
         } @empty {
-          <p class="text-sm opacity-40">Keine Werkzeuge.</p>
+          <p class="text-sm text-gray-400 m-0">Keine Werkzeuge.</p>
         }
       </div>
     </div>
 
     <!-- Gewürze / Sonstiges -->
-    <div class="p-4 rounded-xl border border-[#141414]/10">
+    <div class="p-4 rounded-xl border">
       <div class="flex justify-between items-center mb-3">
-        <h3 class="text-[10px] uppercase tracking-widest opacity-50">Gewürze / Sonstiges</h3>
+        <h3 class="text-xs text-gray-500 font-semibold uppercase m-0">Gewürze / Sonstiges</h3>
         <p-button icon="pi pi-plus" [rounded]="true" [text]="true" severity="secondary" size="small" (onClick)="openAddGeneralIngredientDialog()" />
       </div>
       <div class="space-y-2">
@@ -121,7 +121,7 @@
           <div class="flex items-center justify-between group">
             <div class="text-sm">
               <span class="font-medium">{{ gi.name }}</span>
-              <span class="opacity-50 ml-2">({{ gi.category }})</span>
+              <span class="text-gray-400 ml-2">({{ gi.category }})</span>
             </div>
             <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary" size="small" (onClick)="openEditGeneralIngredientDialog(gi)" />
@@ -129,7 +129,7 @@
             </div>
           </div>
         } @empty {
-          <p class="text-sm opacity-40">Keine Gewürze / Sonstiges.</p>
+          <p class="text-sm text-gray-400 m-0">Keine Gewürze / Sonstiges.</p>
         }
       </div>
     </div>
@@ -140,11 +140,11 @@
 <p-dialog header="Gericht bearbeiten" [(visible)]="showDishDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Name</label>
+      <label class="block text-xs text-gray-500 mb-1">Name</label>
       <input type="text" pInputText [(ngModel)]="dishFormData.name" class="w-full" />
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Basis-Portionen</label>
+      <label class="block text-xs text-gray-500 mb-1">Basis-Portionen</label>
       <p-inputnumber [(ngModel)]="dishFormData.baseServings" [min]="1" [style]="{ width: '100%' }" />
     </div>
     <div class="flex items-center gap-2">
@@ -182,7 +182,7 @@
 <p-dialog [header]="editingIngredientId ? 'Zutat bearbeiten' : 'Zutat hinzufügen'" [(visible)]="showIngredientDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Name der Zutat</label>
+      <label class="block text-xs text-gray-500 mb-1">Name der Zutat</label>
       <p-autocomplete
         [(ngModel)]="ingredientFormData.name"
         [suggestions]="filteredIngredientResults"
@@ -195,18 +195,18 @@
     </div>
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">
+        <label class="block text-xs text-gray-500 mb-1">
           {{ dish().isFixedAmount ? 'Gesamtmenge' : 'Menge pro Person' }}
         </label>
         <p-inputnumber [(ngModel)]="ingredientFormData.amountPerPerson" [minFractionDigits]="0" [maxFractionDigits]="2" [style]="{ width: '100%' }" />
       </div>
       <div>
-        <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Einheit</label>
+        <label class="block text-xs text-gray-500 mb-1">Einheit</label>
         <input type="text" pInputText [(ngModel)]="ingredientFormData.unit" class="w-full" />
       </div>
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Kategorie</label>
+      <label class="block text-xs text-gray-500 mb-1">Kategorie</label>
       <input type="text" pInputText [(ngModel)]="ingredientFormData.category" class="w-full" />
     </div>
   </div>
@@ -220,11 +220,11 @@
 <p-dialog [header]="editingToolId ? 'Werkzeug bearbeiten' : 'Werkzeug hinzufügen'" [(visible)]="showToolDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Name</label>
+      <label class="block text-xs text-gray-500 mb-1">Name</label>
       <input type="text" pInputText [(ngModel)]="toolFormData.name" class="w-full" placeholder="Name des Werkzeugs" />
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Verantwortliche Person</label>
+      <label class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
       <input type="text" pInputText [(ngModel)]="toolFormData.responsiblePerson" class="w-full" placeholder="Optional" />
     </div>
   </div>
@@ -238,11 +238,11 @@
 <p-dialog [header]="editingGeneralIngredientId ? 'Gewürz bearbeiten' : 'Gewürz hinzufügen'" [(visible)]="showGeneralIngredientDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Name</label>
+      <label class="block text-xs text-gray-500 mb-1">Name</label>
       <input type="text" pInputText [(ngModel)]="generalIngredientFormData.name" class="w-full" placeholder="Name" />
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Kategorie</label>
+      <label class="block text-xs text-gray-500 mb-1">Kategorie</label>
       <input type="text" pInputText [(ngModel)]="generalIngredientFormData.category" class="w-full" placeholder="z.B. Gewürze, Öl, etc." />
     </div>
   </div>
