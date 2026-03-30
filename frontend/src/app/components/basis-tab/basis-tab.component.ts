@@ -4,12 +4,13 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ProjectService } from '../../services/project.service';
 import { formatDate } from '../../services/calculation.service';
 
 @Component({
   selector: 'app-basis-tab',
-  imports: [FormsModule, DialogModule, InputTextModule, InputNumberModule, ButtonModule],
+  imports: [FormsModule, DialogModule, InputTextModule, InputNumberModule, ButtonModule, CardModule],
   templateUrl: './basis-tab.component.html',
 })
 export class BasisTabComponent {

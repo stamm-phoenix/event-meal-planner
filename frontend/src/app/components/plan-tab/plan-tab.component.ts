@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ProjectService } from '../../services/project.service';
 import { formatDate } from '../../services/calculation.service';
 import { MealBlock } from '../../models/project.model';
@@ -9,7 +10,7 @@ import { MealBlockCardComponent } from '../meal-block-card/meal-block-card.compo
 
 @Component({
   selector: 'app-plan-tab',
-  imports: [FormsModule, DialogModule, ButtonModule, MealBlockCardComponent],
+  imports: [FormsModule, DialogModule, ButtonModule, CardModule, MealBlockCardComponent],
   templateUrl: './plan-tab.component.html',
 })
 export class PlanTabComponent {

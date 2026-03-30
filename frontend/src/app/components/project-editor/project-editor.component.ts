@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { TabsModule } from 'primeng/tabs';
 import { ProjectService, Tab } from '../../services/project.service';
 import { CalculationService } from '../../services/calculation.service';
 import { BasisTabComponent } from '../basis-tab/basis-tab.component';
@@ -19,6 +20,7 @@ import { PacklisteTabComponent } from '../packliste-tab/packliste-tab.component'
     FormsModule,
     ButtonModule,
     InputTextModule,
+    TabsModule,
     BasisTabComponent,
     PlanTabComponent,
     GerichteTabComponent,

@@ -2,16 +2,16 @@
   <!-- Left panel: Dish list -->
   <div class="lg:col-span-1 space-y-4">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-serif italic">Meine Gerichte</h2>
-      <p-button icon="pi pi-plus" label="Neu" [rounded]="true" severity="contrast" (onClick)="openAddDishDialog()" />
+      <h2 class="text-xl font-bold m-0">Meine Gerichte</h2>
+      <p-button icon="pi pi-plus" label="Neu" [rounded]="true" severity="secondary" (onClick)="openAddDishDialog()" />
     </div>
     <div class="space-y-2">
       @for (dish of dishes(); track dish.id) {
         <button
           (click)="projectService.editingDishId.set(dish.id)"
           [class]="projectService.editingDishId() === dish.id
-            ? 'w-full text-left p-4 rounded-xl border border-[#141414] transition-all flex justify-between items-center bg-[#141414] text-[#E4E3E0] shadow-[4px_4px_0px_0px_rgba(20,20,20,0.3)]'
-            : 'w-full text-left p-4 rounded-xl border border-[#141414] transition-all flex justify-between items-center bg-white hover:bg-[#141414]/5'"
+            ? 'w-full text-left p-4 rounded-xl border transition-all flex justify-between items-center bg-gray-800 text-white'
+            : 'w-full text-left p-4 rounded-xl border transition-all flex justify-between items-center bg-white hover:bg-gray-50'"
         >
           <span class="font-medium">{{ dish.name }}</span>
           <i class="pi pi-chevron-right text-xs" [class.opacity-100]="projectService.editingDishId() === dish.id" [class.opacity-30]="projectService.editingDishId() !== dish.id"></i>
@@ -25,9 +25,9 @@
     @if (editingDish(); as dish) {
       <app-dish-editor [dish]="dish" />
     } @else {
-      <div class="h-full flex flex-col items-center justify-center border-2 border-dashed border-[#141414]/20 rounded-2xl p-12 text-[#141414]/40">
-        <i class="pi pi-list text-5xl mb-4 opacity-20"></i>
-        <p class="font-serif italic text-lg">Wähle ein Gericht aus oder erstelle ein neues.</p>
+      <div class="h-full flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-12 text-gray-400">
+        <i class="pi pi-list text-5xl mb-4"></i>
+        <p class="text-lg">Wähle ein Gericht aus oder erstelle ein neues.</p>
       </div>
     }
   </div>
@@ -37,11 +37,11 @@
 <p-dialog header="Neues Gericht" [(visible)]="showAddDishDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Name</label>
+      <label class="block text-xs text-gray-500 mb-1">Name</label>
       <input type="text" pInputText [(ngModel)]="dishFormData.name" class="w-full" placeholder="Name des Gerichts" />
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Basis-Portionen</label>
+      <label class="block text-xs text-gray-500 mb-1">Basis-Portionen</label>
       <p-inputnumber [(ngModel)]="dishFormData.baseServings" [min]="1" [style]="{ width: '100%' }" />
     </div>
     <div class="flex items-center gap-2">
@@ -49,7 +49,7 @@
       <label for="fixedAmount" class="text-sm">Fixe Menge (nicht pro Person)</label>
     </div>
     <div>
-      <label class="block text-[10px] uppercase tracking-widest opacity-50 mb-1">Notizen</label>
+      <label class="block text-xs text-gray-500 mb-1">Notizen</label>
       <textarea pTextarea [(ngModel)]="dishFormData.notes" class="w-full" rows="3" placeholder="Optionale Notizen..."></textarea>
     </div>
   </div>

@@ -1,52 +1,54 @@
 @if (projectService.currentProject(); as project) {
   <!-- Header -->
-  <header class="border-b border-[#141414] p-6 flex justify-between items-center bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-    <div class="flex items-center gap-4">
-      <button
-        (click)="goBack()"
-        class="p-2 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
-      >
-        <i class="pi pi-arrow-left"></i>
-      </button>
+  <header class="bg-white border-b p-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <p-button
+        icon="pi pi-arrow-left"
+        [rounded]="true"
+        severity="secondary"
+        [text]="true"
+        (onClick)="goBack()"
+      />
       <div>
-        <h1 class="text-2xl font-serif italic font-bold tracking-tight">{{ project.name }}</h1>
-        <p class="text-xs uppercase tracking-widest opacity-50 mt-1">Event Meal Planner</p>
+        <h1 class="text-xl font-bold m-0">{{ project.name }}</h1>
+        <p class="text-sm text-gray-500 m-0">Event Meal Planner</p>
       </div>
     </div>
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-3">
       <input
         type="text"
         pInputText
         [ngModel]="projectService.userName()"
         (ngModelChange)="projectService.userName.set($event)"
         placeholder="Dein Name"
-        class="text-sm"
       />
-      <button
-        class="p-2 hover:bg-[#141414] hover:text-[#E4E3E0] transition-colors border border-[#141414] rounded-full"
+      <p-button
+        icon="pi pi-save"
+        severity="secondary"
+        [text]="true"
+        [rounded]="true"
         title="Gespeichert (automatisch)"
-      >
-        <i class="pi pi-save"></i>
-      </button>
+      />
     </div>
   </header>
 
   <!-- Main Content -->
   <main class="max-w-7xl mx-auto p-6 pb-16">
     <!-- Tab Navigation -->
-    <nav class="flex border border-[#141414] rounded-xl overflow-hidden mb-8 bg-white">
-      @for (tab of tabs; track tab.id) {
-        <button
-          (click)="projectService.activeTab.set(tab.id)"
-          [class]="projectService.activeTab() === tab.id
-            ? 'flex-1 py-4 px-6 flex items-center justify-center gap-2 transition-all bg-[#141414] text-[#E4E3E0]'
-            : 'flex-1 py-4 px-6 flex items-center justify-center gap-2 transition-all hover:bg-[#141414]/5'"
-        >
-          <i [class]="'pi ' + tab.icon"></i>
-          <span class="font-medium hidden sm:inline">{{ tab.label }}</span>
-        </button>
-      }
-    </nav>
+    <p-tabs
+      [value]="projectService.activeTab()"
+      (valueChange)="projectService.activeTab.set($event)"
+      class="mb-6"
+    >
+      <p-tablist>
+        @for (tab of tabs; track tab.id) {
+          <p-tab [value]="tab.id">
+            <i [class]="'pi ' + tab.icon"></i>
+            <span class="ml-2 hidden sm:inline">{{ tab.label }}</span>
+          </p-tab>
+        }
+      </p-tablist>
+    </p-tabs>
 
     <!-- Tab Content -->
     @switch (projectService.activeTab()) {
@@ -75,13 +77,13 @@
   </main>
 
   <!-- Footer -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-[#141414] text-[#E4E3E0] py-2 px-6 text-[10px] uppercase tracking-widest flex justify-between items-center z-50">
+  <footer class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white py-2 px-6 text-xs flex justify-between items-center z-50">
     <span>Projekt: {{ project.name }}</span>
     <span>Gesamt: {{ project.totalPeople }} Personen</span>
     <span>Hauptgruppe: {{ projectService.mainGroupCount() }} Personen</span>
   </footer>
 } @else {
   <div class="flex items-center justify-center h-screen">
-    <p class="text-lg opacity-50">Projekt wird geladen...</p>
+    <p class="text-lg text-gray-400">Projekt wird geladen...</p>
   </div>
 }

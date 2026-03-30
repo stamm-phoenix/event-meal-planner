@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
 import { ConfirmationService } from 'primeng/api';
 import { ProjectService } from '../../services/project.service';
 import { MasterIngredient } from '../../models/project.model';
@@ -10,7 +11,7 @@ import { MasterIngredient } from '../../models/project.model';
 @Component({
   selector: 'app-zutaten-tab',
   standalone: true,
-  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule],
+  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule, CardModule],
   providers: [ConfirmationService],
   templateUrl: './zutaten-tab.component.html',
 })

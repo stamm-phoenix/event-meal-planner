@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
+import { CardModule } from 'primeng/card';
 import { ProjectService } from '../../services/project.service';
 import { CalculationService, GroupBy, formatDate } from '../../services/calculation.service';
 import { ShoppingItem } from '../../models/project.model';
@@ -12,7 +13,7 @@ import { ShoppingItem } from '../../models/project.model';
 @Component({
   selector: 'app-einkauf-tab',
   standalone: true,
-  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule],
+  imports: [FormsModule, DialogModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, CardModule],
   templateUrl: './einkauf-tab.component.html',
 })
 export class EinkaufTabComponent {
@@ -68,9 +69,9 @@ export class EinkaufTabComponent {
   }
 
   getItemClasses(item: ShoppingItem): string {
-    if (this.isFullyBought(item)) return 'bg-green-50/50 opacity-50 border-green-500/30';
-    if (this.isPartiallyBought(item)) return 'bg-orange-50/50 border-orange-500/30';
-    return 'bg-[#E4E3E0]/30 border-transparent hover:border-[#141414]';
+    if (this.isFullyBought(item)) return 'bg-green-50 opacity-60 border-green-300';
+    if (this.isPartiallyBought(item)) return 'bg-orange-50 border-orange-300';
+    return 'bg-gray-50 border-gray-200 hover:border-gray-400';
   }
 
   getStore(item: ShoppingItem): string {
