@@ -3,7 +3,7 @@
   <div class="flex justify-between items-start mb-3">
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-1 text-sm font-medium text-gray-600">
-        <i class="pi pi-clock text-xs"></i>
+        <i class="pi pi-clock text-xs" aria-hidden="true"></i>
         {{ block().time }}
       </div>
       @if (isMine()) {
@@ -12,13 +12,14 @@
         </span>
       }
     </div>
-    <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+    <div class="flex gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
       <p-button
         [icon]="block().isCompleted ? 'pi pi-lock-open' : 'pi pi-check'"
         [severity]="block().isCompleted ? 'secondary' : 'success'"
         [text]="true"
         [rounded]="true"
         size="small"
+        [attr.aria-label]="block().isCompleted ? 'Entsperren' : 'Abschließen'"
         [title]="block().isCompleted ? 'Entsperren' : 'Abschließen'"
         (onClick)="toggleComplete()"
       />
@@ -28,6 +29,7 @@
         [text]="true"
         [rounded]="true"
         size="small"
+        aria-label="Mahlzeit bearbeiten"
         title="Bearbeiten"
         (onClick)="openEditDialog()"
       />
@@ -37,6 +39,7 @@
         [text]="true"
         [rounded]="true"
         size="small"
+        aria-label="Mahlzeit löschen"
         title="Löschen"
         (onClick)="deleteBlock()"
       />
@@ -45,14 +48,14 @@
 
   <p class="font-bold text-sm mb-1">{{ block().label }}</p>
   <div class="flex items-center gap-2 mb-4">
-    <label class="text-xs text-gray-400">Verantwortlich:</label>
+    <span class="text-xs text-gray-400">Verantwortlich:</span>
     <span class="text-xs font-medium">{{ block().responsiblePerson || 'Nicht zugewiesen' }}</span>
   </div>
 
   <!-- Main dishes -->
   <div [class]="block().isCompleted ? 'space-y-4 pointer-events-none' : 'space-y-4'">
     <div>
-      <label class="block text-xs text-gray-400 mb-1">Hauptgerichte (Hauptgruppe + Standard)</label>
+      <p class="text-xs text-gray-400 mb-1 m-0">Hauptgerichte (Hauptgruppe + Standard)</p>
       <div class="space-y-2 mb-2">
         @for (dishId of block().mainDishIds; track $index; let idx = $index) {
           <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-2 py-1">
@@ -64,6 +67,7 @@
                 [text]="true"
                 [rounded]="true"
                 size="small"
+                [attr.aria-label]="'Gericht ' + getDishName(dishId) + ' entfernen'"
                 (onClick)="removeDish(idx)"
               />
             }
@@ -87,10 +91,10 @@
     <!-- Subgroup dishes -->
     @if (subgroups().length > 0) {
       <div class="pt-2 border-t">
-        <label class="block text-xs text-gray-400 mb-2">Spezielle Gerichte für Gruppen</label>
+        <p class="text-xs text-gray-400 mb-2 m-0">Spezielle Gerichte für Gruppen</p>
         @for (sg of subgroups(); track sg.id) {
           <div class="mb-3">
-            <label class="block text-xs font-medium mb-1">{{ sg.name }} ({{ sg.count }})</label>
+            <p class="text-xs font-medium mb-1 m-0">{{ sg.name }} ({{ sg.count }})</p>
             <div class="space-y-1 mb-1">
               @for (dishId of getSubgroupDishIds(sg.id); track $index; let idx = $index) {
                 <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-2 py-1">
@@ -102,6 +106,7 @@
                       [text]="true"
                       [rounded]="true"
                       size="small"
+                      [attr.aria-label]="'Gericht ' + getDishName(dishId) + ' aus Gruppe ' + sg.name + ' entfernen'"
                       (onClick)="removeSubgroupDish(sg.id, idx)"
                     />
                   }
@@ -138,8 +143,9 @@
 >
   <div class="space-y-4 pt-2">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Uhrzeit</label>
+      <label for="editBlockTime" class="block text-xs text-gray-500 mb-1">Uhrzeit</label>
       <input
+        id="editBlockTime"
         type="time"
         [value]="editForm().time"
         (input)="editForm.set({ ...editForm(), time: $any($event.target).value })"
@@ -147,8 +153,9 @@
       />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Bezeichnung</label>
+      <label for="editBlockLabel" class="block text-xs text-gray-500 mb-1">Bezeichnung</label>
       <input
+        id="editBlockLabel"
         type="text"
         [value]="editForm().label"
         (input)="editForm.set({ ...editForm(), label: $any($event.target).value })"
@@ -157,8 +164,9 @@
       />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
+      <label for="editBlockPerson" class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
       <input
+        id="editBlockPerson"
         type="text"
         [value]="editForm().responsiblePerson"
         (input)="editForm.set({ ...editForm(), responsiblePerson: $any($event.target).value })"

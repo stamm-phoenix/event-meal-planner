@@ -11,20 +11,22 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     @for (mi of sortedIngredients(); track mi.id) {
-      <div class="bg-gray-50 border rounded-xl p-4 group hover:border-gray-400 transition-all flex flex-col justify-between">
+      @let usage = getUsage(mi);
+      <div class="bg-gray-50 border rounded-xl p-4 group hover:border-gray-400 focus-within:border-gray-400 transition-all flex flex-col justify-between">
         <div>
           <div class="flex justify-between items-start mb-3">
             <div>
               <h3 class="text-base font-bold m-0">{{ mi.name }}</h3>
               <p class="text-xs text-gray-500 mt-1 m-0">{{ mi.category }}</p>
             </div>
-            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div class="flex gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
               <p-button
                 icon="pi pi-pencil"
                 severity="secondary"
                 [text]="true"
                 [rounded]="true"
                 size="small"
+                [attr.aria-label]="'Zutat ' + mi.name + ' bearbeiten'"
                 (onClick)="openEditDialog(mi)"
               />
               <p-button
@@ -33,21 +35,22 @@
                 [text]="true"
                 [rounded]="true"
                 size="small"
-                [disabled]="getUsage(mi).length > 0"
+                [disabled]="usage.length > 0"
+                [attr.aria-label]="usage.length > 0 ? 'Zutat ' + mi.name + ' wird verwendet und kann nicht gelöscht werden' : 'Zutat ' + mi.name + ' löschen'"
                 (onClick)="deleteIngredient(mi)"
               />
             </div>
           </div>
           <div class="space-y-3">
             <div>
-              <label class="block text-xs text-gray-500 mb-1">Standard-Einheit</label>
+              <p class="text-xs text-gray-500 mb-1 m-0">Standard-Einheit</p>
               <p class="text-sm font-mono m-0">{{ mi.unit }}</p>
             </div>
             <div>
-              <label class="block text-xs text-gray-500 mb-1">Verwendung in Gerichten ({{ getUsage(mi).length }})</label>
+              <p class="text-xs text-gray-500 mb-1 m-0">Verwendung in Gerichten ({{ usage.length }})</p>
               <div class="flex flex-wrap gap-1 mt-1">
-                @if (getUsage(mi).length > 0) {
-                  @for (d of getUsage(mi); track d.id) {
+                @if (usage.length > 0) {
+                  @for (d of usage; track d.id) {
                     <span class="bg-white border text-xs px-2 py-0.5 rounded">{{ d.name }}</span>
                   }
                 } @else {
@@ -66,16 +69,16 @@
 <p-dialog [header]="editingId ? 'Zutat bearbeiten' : 'Neue Zutat'" [(visible)]="showDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Name</label>
-      <input type="text" pInputText [(ngModel)]="formData.name" placeholder="z.B. Kartoffeln" class="w-full" />
+      <label for="miName" class="block text-xs text-gray-500 mb-1">Name</label>
+      <input id="miName" type="text" pInputText [(ngModel)]="formData.name" placeholder="z.B. Kartoffeln" class="w-full" />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Einheit</label>
-      <input type="text" pInputText [(ngModel)]="formData.unit" placeholder="z.B. g, kg, Stk" class="w-full" />
+      <label for="miUnit" class="block text-xs text-gray-500 mb-1">Einheit</label>
+      <input id="miUnit" type="text" pInputText [(ngModel)]="formData.unit" placeholder="z.B. g, kg, Stk" class="w-full" />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Kategorie</label>
-      <input type="text" pInputText [(ngModel)]="formData.category" placeholder="z.B. Gemüse, Kühlregal" class="w-full" />
+      <label for="miCategory" class="block text-xs text-gray-500 mb-1">Kategorie</label>
+      <input id="miCategory" type="text" pInputText [(ngModel)]="formData.category" placeholder="z.B. Gemüse, Kühlregal" class="w-full" />
     </div>
   </div>
   <ng-template #footer>

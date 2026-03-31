@@ -6,13 +6,16 @@
     </div>
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
-        <i class="pi pi-user text-gray-400"></i>
+        <label for="usernameInput" class="sr-only">Dein Name</label>
+        <i class="pi pi-user text-gray-400" aria-hidden="true"></i>
         <input
+          id="usernameInput"
           type="text"
           pInputText
           [ngModel]="projectService.userName()"
           (ngModelChange)="projectService.userName.set($event)"
           placeholder="Wer bist du?"
+          aria-label="Dein Name"
         />
       </div>
       <p-button
@@ -36,19 +39,20 @@
                 [text]="true"
                 [rounded]="true"
                 size="small"
+                [attr.aria-label]="'Projekt ' + project.name + ' löschen'"
                 (onClick)="deleteProject($event, project.id)"
               />
             </div>
           </ng-template>
           <div class="flex gap-4 text-sm text-gray-500 mb-4">
             <span class="flex items-center gap-1">
-              <i class="pi pi-users"></i> {{ project.totalPeople }} Pers.
+              <i class="pi pi-users" aria-hidden="true"></i> {{ project.totalPeople }} Pers.
             </span>
             <span class="flex items-center gap-1">
-              <i class="pi pi-list"></i> {{ project.dishes.length }} Gerichte
+              <i class="pi pi-list" aria-hidden="true"></i> {{ project.dishes.length }} Gerichte
             </span>
             <span class="flex items-center gap-1">
-              <i class="pi pi-calendar"></i> {{ project.mealBlocks.length }} Mahlzeiten
+              <i class="pi pi-calendar" aria-hidden="true"></i> {{ project.mealBlocks.length }} Mahlzeiten
             </span>
           </div>
           <p-button
@@ -57,13 +61,14 @@
             iconPos="right"
             [fluid]="true"
             severity="secondary"
+            (onClick)="$event.stopPropagation(); openProject(project.id)"
           />
         </p-card>
       }
     </div>
     @if (projectService.projects().length === 0) {
       <div class="text-center py-16 text-gray-400">
-        <i class="pi pi-info-circle text-5xl block mb-4"></i>
+        <i class="pi pi-info-circle text-5xl block mb-4" aria-hidden="true"></i>
         <p class="text-lg">Keine Projekte vorhanden. Erstelle dein erstes Projekt!</p>
       </div>
     }

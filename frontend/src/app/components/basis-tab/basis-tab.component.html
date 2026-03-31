@@ -11,6 +11,7 @@
             [text]="true"
             [rounded]="true"
             size="small"
+            aria-label="Projektdetails bearbeiten"
             (onClick)="openProjectDialog()"
           />
         </div>
@@ -18,23 +19,23 @@
 
       <div class="space-y-4">
         <div>
-          <label class="text-xs text-gray-500 block mb-1">Projektname</label>
+          <p class="text-xs text-gray-500 mb-1 m-0">Projektname</p>
           <p class="font-medium m-0">{{ project.name }}</p>
         </div>
         <div>
-          <label class="text-xs text-gray-500 block mb-1">Gesamtteilnehmer</label>
+          <p class="text-xs text-gray-500 mb-1 m-0">Gesamtteilnehmer</p>
           <p class="font-medium m-0">{{ project.totalPeople }}</p>
         </div>
         <div>
-          <label class="text-xs text-gray-500 block mb-1">Startdatum</label>
+          <p class="text-xs text-gray-500 mb-1 m-0">Startdatum</p>
           <p class="font-medium m-0">{{ project.startDate ? formatDate(project.startDate) : '–' }}</p>
         </div>
         <div>
-          <label class="text-xs text-gray-500 block mb-1">Enddatum</label>
+          <p class="text-xs text-gray-500 mb-1 m-0">Enddatum</p>
           <p class="font-medium m-0">{{ project.endDate ? formatDate(project.endDate) : '–' }}</p>
         </div>
         <div>
-          <label class="text-xs text-gray-500 block mb-1">Hauptgruppe</label>
+          <p class="text-xs text-gray-500 mb-1 m-0">Hauptgruppe</p>
           <p class="font-medium m-0">{{ projectService.mainGroupCount() }} Personen</p>
         </div>
       </div>
@@ -51,6 +52,7 @@
             [text]="true"
             [rounded]="true"
             size="small"
+            aria-label="Untergruppe hinzufügen"
             (onClick)="openAddSubgroupDialog()"
           />
         </div>
@@ -61,18 +63,19 @@
       } @else {
         <div class="space-y-2">
           @for (sg of project.subgroups; track sg.id) {
-            <div class="flex items-center justify-between py-2 px-3 border rounded-lg hover:bg-gray-50 group">
+            <div class="flex items-center justify-between py-2 px-3 border rounded-lg hover:bg-gray-50 group focus-within:bg-gray-50">
               <div>
                 <span class="font-medium">{{ sg.name }}</span>
                 <span class="text-sm text-gray-500 ml-2">({{ sg.count }} Personen)</span>
               </div>
-              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div class="flex gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
                 <p-button
                   icon="pi pi-pencil"
                   severity="secondary"
                   [text]="true"
                   [rounded]="true"
                   size="small"
+                  [attr.aria-label]="'Untergruppe ' + sg.name + ' bearbeiten'"
                   (onClick)="openEditSubgroupDialog(sg.id)"
                 />
                 <p-button
@@ -81,6 +84,7 @@
                   [text]="true"
                   [rounded]="true"
                   size="small"
+                  [attr.aria-label]="'Untergruppe ' + sg.name + ' löschen'"
                   (onClick)="openDeleteDialog(sg.id)"
                 />
               </div>
@@ -100,8 +104,9 @@
   >
     <div class="space-y-4">
       <div>
-        <label class="text-xs text-gray-500 block mb-1">Projektname</label>
+        <label for="projName" class="text-xs text-gray-500 block mb-1">Projektname</label>
         <input
+          id="projName"
           type="text"
           pInputText
           [ngModel]="projectForm().name"
@@ -110,8 +115,9 @@
         />
       </div>
       <div>
-        <label class="text-xs text-gray-500 block mb-1">Gesamtteilnehmer</label>
+        <label for="projTotalPeople" class="text-xs text-gray-500 block mb-1">Gesamtteilnehmer</label>
         <p-inputNumber
+          inputId="projTotalPeople"
           [ngModel]="projectForm().totalPeople"
           (ngModelChange)="projectForm.update(f => ({ ...f, totalPeople: $event ?? 0 }))"
           [min]="1"
@@ -120,8 +126,9 @@
         />
       </div>
       <div>
-        <label class="text-xs text-gray-500 block mb-1">Startdatum</label>
+        <label for="projStartDate" class="text-xs text-gray-500 block mb-1">Startdatum</label>
         <input
+          id="projStartDate"
           type="date"
           [ngModel]="projectForm().startDate"
           (ngModelChange)="projectForm.update(f => ({ ...f, startDate: $event }))"
@@ -129,8 +136,9 @@
         />
       </div>
       <div>
-        <label class="text-xs text-gray-500 block mb-1">Enddatum</label>
+        <label for="projEndDate" class="text-xs text-gray-500 block mb-1">Enddatum</label>
         <input
+          id="projEndDate"
           type="date"
           [ngModel]="projectForm().endDate"
           (ngModelChange)="projectForm.update(f => ({ ...f, endDate: $event }))"
@@ -153,8 +161,9 @@
   >
     <div class="space-y-4">
       <div>
-        <label class="text-xs text-gray-500 block mb-1">Name</label>
+        <label for="sgName" class="text-xs text-gray-500 block mb-1">Name</label>
         <input
+          id="sgName"
           type="text"
           pInputText
           [ngModel]="subgroupForm().name"
@@ -164,8 +173,9 @@
         />
       </div>
       <div>
-        <label class="text-xs text-gray-500 block mb-1">Anzahl Personen</label>
+        <label for="sgCount" class="text-xs text-gray-500 block mb-1">Anzahl Personen</label>
         <p-inputNumber
+          inputId="sgCount"
           [ngModel]="subgroupForm().count"
           (ngModelChange)="subgroupForm.update(f => ({ ...f, count: $event ?? 0 }))"
           [min]="0"
