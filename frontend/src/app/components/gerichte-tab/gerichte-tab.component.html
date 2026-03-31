@@ -8,13 +8,15 @@
     <div class="space-y-2">
       @for (dish of dishes(); track dish.id) {
         <button
+          type="button"
           (click)="projectService.editingDishId.set(dish.id)"
           [class]="projectService.editingDishId() === dish.id
             ? 'w-full text-left p-4 rounded-xl border transition-all flex justify-between items-center bg-gray-800 text-white'
             : 'w-full text-left p-4 rounded-xl border transition-all flex justify-between items-center bg-white hover:bg-gray-50'"
+          [attr.aria-current]="projectService.editingDishId() === dish.id ? 'true' : null"
         >
           <span class="font-medium">{{ dish.name }}</span>
-          <i class="pi pi-chevron-right text-xs" [class.opacity-100]="projectService.editingDishId() === dish.id" [class.opacity-30]="projectService.editingDishId() !== dish.id"></i>
+          <i class="pi pi-chevron-right text-xs" aria-hidden="true" [class.opacity-100]="projectService.editingDishId() === dish.id" [class.opacity-30]="projectService.editingDishId() !== dish.id"></i>
         </button>
       }
     </div>
@@ -26,7 +28,7 @@
       <app-dish-editor [dish]="dish" />
     } @else {
       <div class="h-full flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-12 text-gray-400">
-        <i class="pi pi-list text-5xl mb-4"></i>
+        <i class="pi pi-list text-5xl mb-4" aria-hidden="true"></i>
         <p class="text-lg">Wähle ein Gericht aus oder erstelle ein neues.</p>
       </div>
     }
@@ -37,20 +39,20 @@
 <p-dialog header="Neues Gericht" [(visible)]="showAddDishDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Name</label>
-      <input type="text" pInputText [(ngModel)]="dishFormData.name" class="w-full" placeholder="Name des Gerichts" />
+      <label for="newDishName" class="block text-xs text-gray-500 mb-1">Name</label>
+      <input id="newDishName" type="text" pInputText [(ngModel)]="dishFormData.name" class="w-full" placeholder="Name des Gerichts" />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Basis-Portionen</label>
-      <p-inputnumber [(ngModel)]="dishFormData.baseServings" [min]="1" [style]="{ width: '100%' }" />
+      <label for="newDishServings" class="block text-xs text-gray-500 mb-1">Basis-Portionen</label>
+      <p-inputnumber inputId="newDishServings" [(ngModel)]="dishFormData.baseServings" [min]="1" [style]="{ width: '100%' }" />
     </div>
     <div class="flex items-center gap-2">
       <p-checkbox [(ngModel)]="dishFormData.isFixedAmount" [binary]="true" inputId="fixedAmount" />
       <label for="fixedAmount" class="text-sm">Fixe Menge (nicht pro Person)</label>
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Notizen</label>
-      <textarea pTextarea [(ngModel)]="dishFormData.notes" class="w-full" rows="3" placeholder="Optionale Notizen..."></textarea>
+      <label for="newDishNotes" class="block text-xs text-gray-500 mb-1">Notizen</label>
+      <textarea id="newDishNotes" pTextarea [(ngModel)]="dishFormData.notes" class="w-full" rows="3" placeholder="Optionale Notizen..."></textarea>
     </div>
   </div>
   <ng-template #footer>

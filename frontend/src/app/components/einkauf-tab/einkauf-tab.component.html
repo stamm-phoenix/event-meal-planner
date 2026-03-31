@@ -47,6 +47,7 @@
                   [outlined]="!item.isBought"
                   [rounded]="true"
                   size="small"
+                  [attr.aria-label]="item.isBought ? 'Markierung aufheben für ' + item.name : item.name + ' als gekauft markieren'"
                   (onClick)="toggleGeneralBought(item.name)"
                 />
               </div>
@@ -145,13 +146,13 @@
       <p class="text-xs text-gray-500 m-0">Bedarf: {{ editFormData.totalAmount.toFixed(1) }} {{ editFormData.unit }}</p>
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Laden</label>
-      <input type="text" pInputText [(ngModel)]="editFormData.store" placeholder="z.B. Aldi, Rewe..." class="w-full" />
+      <label for="editStore" class="block text-xs text-gray-500 mb-1">Laden</label>
+      <input id="editStore" type="text" pInputText [(ngModel)]="editFormData.store" placeholder="z.B. Aldi, Rewe..." class="w-full" />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Gekaufte Menge</label>
+      <label for="editBoughtAmount" class="block text-xs text-gray-500 mb-1">Gekaufte Menge</label>
       <div class="flex items-center border rounded-xl overflow-hidden">
-        <input type="number" step="0.01" [(ngModel)]="editFormData.boughtAmount" class="flex-1 px-4 py-2 focus:outline-none font-mono" />
+        <input id="editBoughtAmount" type="number" step="0.01" [(ngModel)]="editFormData.boughtAmount" class="flex-1 px-4 py-2 focus:outline-none font-mono" />
         <span class="px-4 py-2 bg-gray-50 text-sm border-l text-gray-500">/ {{ editFormData.totalAmount.toFixed(1) }} {{ editFormData.unit }}</span>
       </div>
     </div>

@@ -10,6 +10,7 @@
             [rounded]="true"
             severity="secondary"
             size="small"
+            aria-label="Mahlzeit hinzufügen"
             (onClick)="openAddMealDialog(day)"
           />
         </div>
@@ -33,8 +34,9 @@
 >
   <div class="space-y-4 pt-2">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Uhrzeit</label>
+      <label for="mealTime" class="block text-xs text-gray-500 mb-1">Uhrzeit</label>
       <input
+        id="mealTime"
         type="time"
         [value]="mealForm().time"
         (input)="mealForm.set({ ...mealForm(), time: $any($event.target).value })"
@@ -42,8 +44,9 @@
       />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Bezeichnung</label>
+      <label for="mealLabel" class="block text-xs text-gray-500 mb-1">Bezeichnung</label>
       <input
+        id="mealLabel"
         type="text"
         [value]="mealForm().label"
         (input)="mealForm.set({ ...mealForm(), label: $any($event.target).value })"
@@ -52,8 +55,9 @@
       />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
+      <label for="mealPerson" class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
       <input
+        id="mealPerson"
         type="text"
         [value]="mealForm().responsiblePerson"
         (input)="mealForm.set({ ...mealForm(), responsiblePerson: $any($event.target).value })"

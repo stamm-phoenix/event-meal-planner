@@ -140,12 +140,12 @@
 <p-dialog header="Gericht bearbeiten" [(visible)]="showDishDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Name</label>
-      <input type="text" pInputText [(ngModel)]="dishFormData.name" class="w-full" />
+      <label for="editDishName" class="block text-xs text-gray-500 mb-1">Name</label>
+      <input id="editDishName" type="text" pInputText [(ngModel)]="dishFormData.name" class="w-full" />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Basis-Portionen</label>
-      <p-inputnumber [(ngModel)]="dishFormData.baseServings" [min]="1" [style]="{ width: '100%' }" />
+      <label for="editDishServings" class="block text-xs text-gray-500 mb-1">Basis-Portionen</label>
+      <p-inputnumber inputId="editDishServings" [(ngModel)]="dishFormData.baseServings" [min]="1" [style]="{ width: '100%' }" />
     </div>
     <div class="flex items-center gap-2">
       <p-checkbox [(ngModel)]="dishFormData.isFixedAmount" [binary]="true" inputId="editFixedAmount" />
@@ -182,8 +182,9 @@
 <p-dialog [header]="editingIngredientId ? 'Zutat bearbeiten' : 'Zutat hinzufügen'" [(visible)]="showIngredientDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Name der Zutat</label>
+      <label for="ingName" class="block text-xs text-gray-500 mb-1">Name der Zutat</label>
       <p-autocomplete
+        inputId="ingName"
         [(ngModel)]="ingredientFormData.name"
         [suggestions]="filteredIngredientResults"
         (completeMethod)="filterIngredients($event)"
@@ -195,19 +196,19 @@
     </div>
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block text-xs text-gray-500 mb-1">
+        <label for="ingAmount" class="block text-xs text-gray-500 mb-1">
           {{ dish().isFixedAmount ? 'Gesamtmenge' : 'Menge pro Person' }}
         </label>
-        <p-inputnumber [(ngModel)]="ingredientFormData.amountPerPerson" [minFractionDigits]="0" [maxFractionDigits]="2" [style]="{ width: '100%' }" />
+        <p-inputnumber inputId="ingAmount" [(ngModel)]="ingredientFormData.amountPerPerson" [minFractionDigits]="0" [maxFractionDigits]="2" [style]="{ width: '100%' }" />
       </div>
       <div>
-        <label class="block text-xs text-gray-500 mb-1">Einheit</label>
-        <input type="text" pInputText [(ngModel)]="ingredientFormData.unit" class="w-full" />
+        <label for="ingUnit" class="block text-xs text-gray-500 mb-1">Einheit</label>
+        <input id="ingUnit" type="text" pInputText [(ngModel)]="ingredientFormData.unit" class="w-full" />
       </div>
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Kategorie</label>
-      <input type="text" pInputText [(ngModel)]="ingredientFormData.category" class="w-full" />
+      <label for="ingCategory" class="block text-xs text-gray-500 mb-1">Kategorie</label>
+      <input id="ingCategory" type="text" pInputText [(ngModel)]="ingredientFormData.category" class="w-full" />
     </div>
   </div>
   <ng-template #footer>
@@ -220,12 +221,12 @@
 <p-dialog [header]="editingToolId ? 'Werkzeug bearbeiten' : 'Werkzeug hinzufügen'" [(visible)]="showToolDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Name</label>
-      <input type="text" pInputText [(ngModel)]="toolFormData.name" class="w-full" placeholder="Name des Werkzeugs" />
+      <label for="toolName" class="block text-xs text-gray-500 mb-1">Name</label>
+      <input id="toolName" type="text" pInputText [(ngModel)]="toolFormData.name" class="w-full" placeholder="Name des Werkzeugs" />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
-      <input type="text" pInputText [(ngModel)]="toolFormData.responsiblePerson" class="w-full" placeholder="Optional" />
+      <label for="toolPerson" class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
+      <input id="toolPerson" type="text" pInputText [(ngModel)]="toolFormData.responsiblePerson" class="w-full" placeholder="Optional" />
     </div>
   </div>
   <ng-template #footer>
@@ -238,12 +239,12 @@
 <p-dialog [header]="editingGeneralIngredientId ? 'Gewürz bearbeiten' : 'Gewürz hinzufügen'" [(visible)]="showGeneralIngredientDialog" [modal]="true" [style]="{ width: '28rem' }">
   <div class="space-y-4">
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Name</label>
-      <input type="text" pInputText [(ngModel)]="generalIngredientFormData.name" class="w-full" placeholder="Name" />
+      <label for="genIngName" class="block text-xs text-gray-500 mb-1">Name</label>
+      <input id="genIngName" type="text" pInputText [(ngModel)]="generalIngredientFormData.name" class="w-full" placeholder="Name" />
     </div>
     <div>
-      <label class="block text-xs text-gray-500 mb-1">Kategorie</label>
-      <input type="text" pInputText [(ngModel)]="generalIngredientFormData.category" class="w-full" placeholder="z.B. Gewürze, Öl, etc." />
+      <label for="genIngCategory" class="block text-xs text-gray-500 mb-1">Kategorie</label>
+      <input id="genIngCategory" type="text" pInputText [(ngModel)]="generalIngredientFormData.category" class="w-full" placeholder="z.B. Gewürze, Öl, etc." />
     </div>
   </div>
   <ng-template #footer>

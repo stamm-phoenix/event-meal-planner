@@ -7,6 +7,7 @@
         [rounded]="true"
         severity="secondary"
         [text]="true"
+        aria-label="Zurück zur Projektübersicht"
         (onClick)="goBack()"
       />
       <div>
@@ -16,17 +17,20 @@
     </div>
     <div class="flex items-center gap-3">
       <input
+        id="editorUsernameInput"
         type="text"
         pInputText
         [ngModel]="projectService.userName()"
         (ngModelChange)="projectService.userName.set($event)"
         placeholder="Dein Name"
+        aria-label="Dein Name"
       />
       <p-button
         icon="pi pi-save"
         severity="secondary"
         [text]="true"
         [rounded]="true"
+        aria-label="Gespeichert (automatisch)"
         title="Gespeichert (automatisch)"
       />
     </div>
@@ -43,7 +47,7 @@
       <p-tablist>
         @for (tab of tabs; track tab.id) {
           <p-tab [value]="tab.id">
-            <i [class]="'pi ' + tab.icon"></i>
+            <i [class]="'pi ' + tab.icon" aria-hidden="true"></i>
             <span class="ml-2 hidden sm:inline">{{ tab.label }}</span>
           </p-tab>
         }
