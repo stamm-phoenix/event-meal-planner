@@ -102,13 +102,22 @@
                       </div>
                     </div>
                     <div class="flex gap-1">
-                      <p-button icon="pi pi-pencil" severity="secondary" [outlined]="true" size="small" [rounded]="true" (onClick)="openEditItemDialog(item)" />
+                      <p-button
+                        icon="pi pi-pencil"
+                        severity="secondary"
+                        [outlined]="true"
+                        size="small"
+                        [rounded]="true"
+                        [attr.aria-label]="'Einkauf für ' + item.name + ' bearbeiten'"
+                        (onClick)="openEditItemDialog(item)"
+                      />
                       <p-button
                         icon="pi pi-shopping-cart"
                         [severity]="isFullyBought(item) ? 'success' : 'secondary'"
                         [outlined]="!isFullyBought(item)"
                         [rounded]="true"
                         size="small"
+                        [attr.aria-label]="isFullyBought(item) ? 'Markierung aufheben für ' + item.name : item.name + ' als gekauft markieren'"
                         (onClick)="toggleBought(item)"
                       />
                     </div>
@@ -119,6 +128,7 @@
                       [outlined]="!isFullyBought(item)"
                       [rounded]="true"
                       size="small"
+                      [attr.aria-label]="isFullyBought(item) ? 'Markierung aufheben für ' + item.name : item.name + ' als gekauft markieren'"
                       (onClick)="toggleGeneralBought(item.name)"
                     />
                   }
