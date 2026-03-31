@@ -25,14 +25,12 @@
         placeholder="Dein Name"
         aria-label="Dein Name"
       />
-      <p-button
-        icon="pi pi-save"
-        severity="secondary"
-        [text]="true"
-        [rounded]="true"
+      <span
+        class="pi pi-save text-gray-400 text-lg"
+        role="status"
         aria-label="Gespeichert (automatisch)"
         title="Gespeichert (automatisch)"
-      />
+      ></span>
     </div>
   </header>
 
@@ -41,12 +39,12 @@
     <!-- Tab Navigation -->
     <p-tabs
       [value]="projectService.activeTab()"
-      (valueChange)="projectService.activeTab.set($any($event))"
+      (valueChange)="onTabChange($event)"
       class="mb-6"
     >
       <p-tablist>
         @for (tab of tabs; track tab.id) {
-          <p-tab [value]="tab.id">
+          <p-tab [value]="tab.id" [attr.aria-label]="tab.label">
             <i [class]="'pi ' + tab.icon" aria-hidden="true"></i>
             <span class="ml-2 hidden sm:inline">{{ tab.label }}</span>
           </p-tab>

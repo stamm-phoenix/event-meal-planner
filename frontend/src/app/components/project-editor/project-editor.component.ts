@@ -54,6 +54,13 @@ export class ProjectEditorComponent implements OnInit {
     }
   }
 
+  onTabChange(value: unknown): void {
+    const tab = this.tabs.find(t => t.id === value);
+    if (tab) {
+      this.projectService.activeTab.set(tab.id);
+    }
+  }
+
   goBack(): void {
     this.projectService.selectProject(null);
     this.router.navigate(['/']);

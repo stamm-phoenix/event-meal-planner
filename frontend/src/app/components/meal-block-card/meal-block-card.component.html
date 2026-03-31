@@ -143,9 +143,9 @@
 >
   <div class="space-y-4 pt-2">
     <div>
-      <label for="editBlockTime" class="block text-xs text-gray-500 mb-1">Uhrzeit</label>
+      <label [for]="'editBlockTime-' + block().id" class="block text-xs text-gray-500 mb-1">Uhrzeit</label>
       <input
-        id="editBlockTime"
+        [id]="'editBlockTime-' + block().id"
         type="time"
         [value]="editForm().time"
         (input)="editForm.set({ ...editForm(), time: $any($event.target).value })"
@@ -153,9 +153,9 @@
       />
     </div>
     <div>
-      <label for="editBlockLabel" class="block text-xs text-gray-500 mb-1">Bezeichnung</label>
+      <label [for]="'editBlockLabel-' + block().id" class="block text-xs text-gray-500 mb-1">Bezeichnung</label>
       <input
-        id="editBlockLabel"
+        [id]="'editBlockLabel-' + block().id"
         type="text"
         [value]="editForm().label"
         (input)="editForm.set({ ...editForm(), label: $any($event.target).value })"
@@ -164,9 +164,9 @@
       />
     </div>
     <div>
-      <label for="editBlockPerson" class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
+      <label [for]="'editBlockPerson-' + block().id" class="block text-xs text-gray-500 mb-1">Verantwortliche Person</label>
       <input
-        id="editBlockPerson"
+        [id]="'editBlockPerson-' + block().id"
         type="text"
         [value]="editForm().responsiblePerson"
         (input)="editForm.set({ ...editForm(), responsiblePerson: $any($event.target).value })"
